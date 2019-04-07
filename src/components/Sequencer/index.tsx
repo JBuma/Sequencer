@@ -8,15 +8,8 @@ declare const Tone: any;
 
 interface SequencerProps {
 	length: number;
-	// range: number;
-	owner: string;
-	id: string;
 
-	onSequencerChange?: (change: {
-		grid: SequencerNote[][];
-		settings: InstrumentSettings;
-		id: string;
-	}) => void;
+	onSequencerChange: (grid: SequencerNote[][], settings: InstrumentSettings) => void;
 
 	sequencerGrid: SequencerNote[][] | null;
 	instrumentSettings: InstrumentSettings | null;
@@ -61,34 +54,14 @@ export class Sequencer extends Component<SequencerProps, SequencerState> {
 			[],
 			"8n"
 		);
-		Tone.Transport.schedule(() => this.part.start(Tone.Transport.progress));
-		console.log("new sequencer", Tone.Transport.progress, this.part);
+		this.part.loop = true;
+		this.part.start();
 
 		this.onSequencerChange(sequencerGrid);
 	}
 
-	public componentDidUpdate(prevProps: SequencerProps, prevState: SequencerState) {
-		console.log("component update");
-		if (this.props.sequencerGrid !== prevProps.sequencerGrid) {
-			console.log("new grid!!!!!!!!");
-			this.part.removeAll();
-			if (this.props.sequencerGrid) {
-				this.props.sequencerGrid.forEach((row, y) =>
-					row.forEach((note, x) => {
-						if (prevProps.sequencerGrid && note !== prevProps.sequencerGrid[y][x]) {
-							// this.toggleNote(x, y, note.value);
-						}
-
-						// this.part.add(this.getTimeNotation(note.xPosition), note.value);
-					})
-				);
-			}
-		}
-		console.log(this.props.owner, this.part);
-	}
-
 	public render() {
-		const { noteRange, sequencerGrid, owner } = this.props;
+		const { noteRange, sequencerGrid } = this.props;
 
 		const grid: JSX.Element[] = [];
 		if (sequencerGrid) {
@@ -107,7 +80,7 @@ export class Sequencer extends Component<SequencerProps, SequencerState> {
 				}
 				grid.push(
 					<div className="note-row">
-						{owner === "self" && <h3 className="note-name">{noteRange[y]}</h3>}
+						<h3 className="note-name">{noteRange[y]}</h3>
 						{noteRow}
 					</div>
 				);
@@ -116,25 +89,20 @@ export class Sequencer extends Component<SequencerProps, SequencerState> {
 
 		return (
 			<div id="sequencer-section">
-				<section className={`sequencer ${owner === "self" ? "large" : "small"}`}>
+				<section className={`sequencer large`}>
 					<SequencerGrid
-						owner={owner}
 						onToggleNote={this.toggleNote}
 						sequencerGrid={sequencerGrid}
 						noteRange={noteRange}
 					/>
-					{/*</section>{owner === "self" && (
-						// <button className="play-btn" onClick={this.toggleSequence}>
-						// 	{this.state.isPlaying ? "stop" : "play"}
-						// </button>
-					// )}*/}
+					<button className="play-btn" onClick={this.toggleSequence}>
+						{this.state.isPlaying ? "stop" : "play"}
+					</button>
 				</section>
-				{owner === "self" && (
-					<SequencerSettings
-						changeOctave={this.changeOctave}
-						changeInstrumentSettings={this.changeInstrumentSettings}
-					/>
-				)}
+				<SequencerSettings
+					changeOctave={this.changeOctave}
+					changeInstrumentSettings={this.changeInstrumentSettings}
+				/>
 			</div>
 		);
 	}
@@ -143,9 +111,6 @@ export class Sequencer extends Component<SequencerProps, SequencerState> {
 		`0:${Math.floor(xPosition / 4)}:${xPosition % 4}`;
 
 	public toggleNote = (xPosition: number, yPosition: number, value: string) => {
-		if (this.props.owner !== "self") {
-			return;
-		}
 		const positionNotation = this.getTimeNotation(xPosition);
 		const seqGrid = this.props.sequencerGrid;
 		if (seqGrid) {
@@ -159,18 +124,16 @@ export class Sequencer extends Component<SequencerProps, SequencerState> {
 		}
 	};
 
-	// private toggleSequence = () => {
-	// 	this.setState({
-	// 		isPlaying: !this.state.isPlaying
-	// 	});
-	// 	if (!this.state.isPlaying) {
-	// 		Tone.Transport.stop();
-	// 		console.log("stop");
-	// 	} else {
-	// 		Tone.Transport.start("+0.1");
-	// 		console.log("start");
-	// 	}
-	// };
+	private toggleSequence = () => {
+		this.setState({
+			isPlaying: !this.state.isPlaying
+		});
+		if (!this.state.isPlaying) {
+			Tone.Transport.stop();
+		} else {
+			Tone.Transport.start("+0.1");
+		}
+	};
 
 	private changeOctave = (octave: number) => {
 		const sequencerGrid = this.props.sequencerGrid;
@@ -220,10 +183,6 @@ export class Sequencer extends Component<SequencerProps, SequencerState> {
 		if (!this.props.onSequencerChange || !sequencerGrid || !instrumentSettings) {
 			return;
 		}
-		this.props.onSequencerChange({
-			id: this.props.id,
-			grid: sequencerGrid,
-			settings: instrumentSettings
-		});
+		this.props.onSequencerChange(sequencerGrid, instrumentSettings);
 	};
 }

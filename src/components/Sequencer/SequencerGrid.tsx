@@ -2,14 +2,13 @@ import { h, FunctionalComponent } from "preact";
 import Note from "./Note";
 
 interface SequencerGridProps {
-	owner: string;
 	sequencerGrid: SequencerNote[][] | null;
 	noteRange: string[];
 	onToggleNote: (xPosition: number, yPosition: number, value: string) => void;
 }
 
 const SequencerGrid: FunctionalComponent<SequencerGridProps> = props => {
-	const { noteRange, sequencerGrid, owner, onToggleNote } = props;
+	const { noteRange, sequencerGrid, onToggleNote } = props;
 
 	const grid: JSX.Element[] = [];
 	if (sequencerGrid) {
@@ -28,7 +27,7 @@ const SequencerGrid: FunctionalComponent<SequencerGridProps> = props => {
 			}
 			grid.push(
 				<div className="note-row">
-					{owner === "self" && <h3 className="note-name">{noteRange[y]}</h3>}
+					<h3 className="note-name">{noteRange[y]}</h3>
 					{noteRow}
 				</div>
 			);
