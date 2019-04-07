@@ -1,0 +1,79 @@
+@import './vars';
+
+#sequencer-section {
+
+	display: flex;
+	flex-flow: row nowrap;
+
+	.sequencer {
+		&.large {
+			.note-name {
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+			}
+
+			.note {
+				width: 50px;
+				height: 50px;
+			}
+		}
+
+		&.small {
+			.note-name {
+				width: 20px;
+				height: 20px;
+				line-height: 20px;
+			}
+
+			.note {
+				width: 20px;
+				height: 20px;
+			}
+		}
+
+		.sequencer-grid {
+			.note-row {
+				display: flex;
+				flex-flow: row nowrap;
+
+				.note-name {
+
+					text-align: center;
+					margin: 0;
+					// line-height: 50px;
+				}
+			}
+		}
+
+		.note {
+			display: inline-block;
+			// background-color: lightgrey;
+
+			border-radius: 3px;
+			margin: 1px;
+
+			transition: background-color 0.1s ease-out;
+
+			&.active {
+				background-color: teal;
+			}
+
+			&.light:not(.active) {
+				background-color: #d2d2d2;
+
+			}
+
+			&.dark:not(.active) {
+				background-color: #bdbdbd;
+			}
+		}
+	}
+
+	#instrument-settings {
+		.settings-form {
+			display: flex;
+			flex-flow: row wrap;
+		}
+	}
+}

@@ -1,0 +1,21 @@
+@import './vars';
+
+.login-wrapper {
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	background-color: $color__primary__faded;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	// filter: blur(4px);
+	.login {
+		padding: $spacing__large;
+		background-color: $color__primary;
+	}
+}

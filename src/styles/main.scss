@@ -1,0 +1,87 @@
+@import './vars';
+@import './normalize';
+
+body,
+html {
+	font-family: sans-serif;
+	color: $color--text__primary;
+}
+
+.dark {
+	color: $color--text__dark;
+}
+
+
+// BOOKMARK: Forms
+
+input,
+textarea {
+	color: $color--text__primary;
+	border: 1px solid $color--text__primary;
+	font-size: 1em;
+	border-radius: 2px;
+	// width: 100%;
+	padding: $spacing__small;
+}
+
+.input-group {
+	display: flex;
+	flex-flow: column nowrap;
+	margin: $spacing__small;
+}
+
+// BOOKMARK: Buttons
+
+button,
+a.button {
+	background: none;
+	background-color: $color__accent;
+	border: none;
+	padding: $spacing__medium $spacing__large;
+	color: $color--text__dark;
+	font-weight: bold;
+	margin: $spacing__small;
+	border-radius: 2px;
+	display: inline-block;
+
+	&.centered {
+		display: block;
+		text-align: center;
+		margin: $spacing__small auto;
+	}
+}
+
+#app,
+#main,
+body,
+html {
+	width: 100%;
+	height: 100%;
+}
+
+#main {
+	// display: flex;
+	// flex-flow: row nowrap;
+	// justify-content: space-between;
+	background-color: $color__primary;
+	color: $color--text__dark;
+	display: grid;
+	grid-template-rows: 3fr 2fr;
+	grid-template-columns: 1fr 15%;
+	grid-template-areas:
+		"sequencer chat"
+		"band  chat";
+
+	#sequencer-section {
+		grid-area: sequencer;
+	}
+
+	.band {
+		grid-area: band;
+	}
+
+	#chat {
+		grid-area: chat;
+	}
+
+}

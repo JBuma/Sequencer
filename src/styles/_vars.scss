@@ -1,0 +1,17 @@
+$color__primary: rgb(23, 150, 192);
+$color__accent:rgb(69, 199, 52);
+
+$color--text__primary:#191919;
+$color--text__dark:white;
+
+
+$color__primary__faded:lighten(adjust-hue($color__primary, 50%), 50%);
+$color__primary__darken: darken(adjust-hue($color__primary, 20%), 20%);
+
+// Spacing
+$spacing-modifier:1.66;
+$spacing__tiny: 4px;
+$spacing__small: $spacing__tiny * $spacing-modifier;
+$spacing__medium: $spacing__small * $spacing-modifier;
+$spacing__large: $spacing__medium * $spacing-modifier;
+$spacing__huge: $spacing__large * $spacing-modifier;
